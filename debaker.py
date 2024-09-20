@@ -4,13 +4,13 @@ import tkinter as tk
 from tkinter import filedialog
 
 def read_default_file_list(file_path):
-    """Read the list of default files from a .txt file."""
+    # Read the list of default files from a .txt file.
     with open(file_path, 'r') as file:
         default_files = [line.strip() for line in file if line.strip()]
     return default_files
 
 def delete_files_from_zip(zip_file_path, files_to_delete):
-    """Delete specified files from the .zip archive."""
+    # Delete specified files from the .zip archive.
     temp_zip_path = zip_file_path + ".temp"
     
     with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
@@ -24,7 +24,7 @@ def delete_files_from_zip(zip_file_path, files_to_delete):
     os.replace(temp_zip_path, zip_file_path)
 
 def compare_zip_with_list(zip_file_path, default_textures_file, default_models_file, default_sounds_file):
-    """Compare the .zip file's contents with the default textures, models, and sounds lists."""
+    # Compare the .zip file's contents with the default textures, models, and sounds lists.
     # Read the default textures, models, and sounds from their respective .txt files
     default_textures_list = read_default_file_list(default_textures_file)
     default_models_list = read_default_file_list(default_models_file)
@@ -47,7 +47,7 @@ def compare_zip_with_list(zip_file_path, default_textures_file, default_models_f
 
     # Print results for textures
     if default_textures_found:
-        print("Textures found in the default list (sorted):")
+        print("Textures found in the default list:")
         for file in default_textures_found:
             print(f"- {file}")
     else:
@@ -55,7 +55,7 @@ def compare_zip_with_list(zip_file_path, default_textures_file, default_models_f
 
     # Print results for models
     if default_models_found:
-        print("\nModels found in the default list (sorted):")
+        print("\nModels found in the default list:")
         for file in default_models_found:
             print(f"- {file}")
     else:
@@ -63,7 +63,7 @@ def compare_zip_with_list(zip_file_path, default_textures_file, default_models_f
 
     # Print results for sounds
     if default_sounds_found:
-        print("\nSounds found in the default list (sorted):")
+        print("\nSounds found in the default list:")
         for file in default_sounds_found:
             print(f"- {file}")
     else:
@@ -80,7 +80,7 @@ def compare_zip_with_list(zip_file_path, default_textures_file, default_models_f
             print("\nNo files were deleted.")
 
 def browse_for_zip_file():
-    """Open a file dialog to allow the user to select a .zip file."""
+    # Open a file dialog to allow the user to select a .zip file.
     root = tk.Tk()
     root.withdraw()  # Hide the root window
     zip_file_path = filedialog.askopenfilename(
@@ -90,9 +90,9 @@ def browse_for_zip_file():
     return zip_file_path
 
 # Example usage
-default_textures_file = 'F:/Source Engine/Mapping/default_textures.txt'  # Path to your .txt file containing the list of default textures
-default_models_file = 'F:/Source Engine/Mapping/default_models.txt'  # Path to your .txt file containing the list of default models
-default_sounds_file = 'F:/Source Engine/Mapping/default_sounds.txt'  # Path to your .txt file containing the list of default sounds
+default_textures_file = 'path/to/default_textures.txt'  # Path to your .txt file containing the list of default textures
+default_models_file = 'path/to/default_models.txt'  # Path to your .txt file containing the list of default models
+default_sounds_file = 'path/to/default_sounds.txt'  # Path to your .txt file containing the list of default sounds
 
 # Browse for the zip file
 zip_file_path = browse_for_zip_file()
