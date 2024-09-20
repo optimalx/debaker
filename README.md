@@ -9,5 +9,5 @@ Usage:
 3. Choose a .zip
 
 Make sure not to nest folders in the zip, i.e.:
-Correct: /de_dust2 textures.zip/materials
-Incorrect: /de_dust2 textures.zip/de_dust2 textures/materials
+* Correct: /de_dust2 textures.zip/materials
+* Incorrect: /de_dust2 textures.zip/de_dust2 textures/materials
