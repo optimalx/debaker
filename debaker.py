@@ -39,67 +39,72 @@ def find_associated_model_files(zip_set, model_file):
 
 def compare_zip_with_list(zip_file_path, default_textures_file, default_models_file, default_sounds_file):
     """Compare the .zip file's contents with the default textures, models, and sounds lists."""
-    # Read the default textures and sounds from their respective .txt files
-    default_textures_list = read_default_file_list(default_textures_file)
-    default_models_list = read_default_file_list(default_models_file)  # Read the .mdl files only
-    default_sounds_list = read_default_file_list(default_sounds_file)
+    try:
+        # Read the default textures and sounds from their respective .txt files
+        default_textures_list = read_default_file_list(default_textures_file)
+        default_models_list = read_default_file_list(default_models_file)  # Read the .mdl files only
+        default_sounds_list = read_default_file_list(default_sounds_file)
 
-    # Read the contents of the zip file
-    with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
-        zip_contents = zip_file.namelist()
+        # Read the contents of the zip file
+        with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
+            zip_contents = zip_file.namelist()
 
-    # Convert lists to sets for easier comparison
-    textures_set = set(default_textures_list)
-    sounds_set = set(default_sounds_list)
-    zip_set = set(zip_contents)
+        # Convert lists to sets for easier comparison
+        textures_set = set(default_textures_list)
+        sounds_set = set(default_sounds_list)
+        zip_set = set(zip_contents)
 
-    # Find files from textures and sounds that are found in the zip
-    default_textures_found = sorted(textures_set.intersection(zip_set))
-    default_sounds_found = sorted(sounds_set.intersection(zip_set))
+        # Find files from textures and sounds that are found in the zip
+        default_textures_found = sorted(textures_set.intersection(zip_set))
+        default_sounds_found = sorted(sounds_set.intersection(zip_set))
 
-    # For each .mdl file in the default list, find its associated files automatically
-    default_models_found = []
-    mdl_files_in_zip = set(f for f in zip_set if f.endswith('.mdl'))
+        # For each .mdl file in the default list, find its associated files automatically
+        default_models_found = []
+        mdl_files_in_zip = set(f for f in zip_set if f.endswith('.mdl'))
 
-    for mdl_file in mdl_files_in_zip.intersection(set(default_models_list)):
-        associated_files = find_associated_model_files(zip_set, mdl_file)
-        default_models_found.extend(associated_files)
+        for mdl_file in mdl_files_in_zip.intersection(set(default_models_list)):
+            associated_files = find_associated_model_files(zip_set, mdl_file)
+            default_models_found.extend(associated_files)
 
-    default_models_found = sorted(default_models_found)
+        default_models_found = sorted(default_models_found)
 
-    # Print results for textures
-    if default_textures_found:
-        print("Textures found in the default list:")
-        for file in default_textures_found:
-            print(f"- {file}")
-    else:
-        print("No textures from the default list found.")
-
-    # Print results for models
-    if default_models_found:
-        print("\nModels and associated files found:")
-        for file in default_models_found:
-            print(f"- {file}")
-    else:
-        print("No models or associated files found.")
-
-    # Print results for sounds
-    if default_sounds_found:
-        print("\nSounds found in the default list:")
-        for file in default_sounds_found:
-            print(f"- {file}")
-    else:
-        print("No sounds from the default list found.")
-
-    # Ask user if they want to delete the matching files
-    if default_textures_found or default_models_found or default_sounds_found:
-        user_input = input("\nDo you want to delete the matching files from the zip archive? (yes/no): ").strip().lower()
-        if user_input == 'yes':
-            files_to_delete = default_textures_found + default_models_found + default_sounds_found
-            delete_files_from_zip(zip_file_path, files_to_delete)
-            print("\nThe matching files have been deleted from the zip archive.")
+        # Print results for textures
+        if default_textures_found:
+            print("Textures found in the default list (sorted):")
+            for file in default_textures_found:
+                print(f"- {file}")
         else:
-            print("\nNo files were deleted.")
+            print("No textures from the default list found.")
+
+        # Print results for models
+        if default_models_found:
+            print("\nModels and associated files found (sorted):")
+            for file in default_models_found:
+                print(f"- {file}")
+        else:
+            print("No models or associated files found.")
+
+        # Print results for sounds
+        if default_sounds_found:
+            print("\nSounds found in the default list (sorted):")
+            for file in default_sounds_found:
+                print(f"- {file}")
+        else:
+            print("No sounds from the default list found.")
+
+        # Ask user if they want to delete the matching files
+        if default_textures_found or default_models_found or default_sounds_found:
+            user_input = input("\nDo you want to delete the matching files from the zip archive? (yes/no): ").strip().lower()
+            if user_input == 'yes':
+                files_to_delete = default_textures_found + default_models_found + default_sounds_found
+                delete_files_from_zip(zip_file_path, files_to_delete)
+                print("\nThe matching files have been deleted from the zip archive.")
+            else:
+                print("\nNo files were deleted.")
+    except FileNotFoundError as e:
+        print(f"Error: {e}. Please ensure the specified paths for the .txt files are correct.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 def browse_for_zip_file():
     """Open a file dialog to allow the user to select a .zip file."""
