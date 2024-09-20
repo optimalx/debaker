@@ -1,7 +1,7 @@
 # debaker
 Automatic CSS/HL2/GMod file detection
 
-A tool/script I made with ChatGPT to detect baked files in a map. Instead of manually going through & cross-referencing a maps textures & models with CSS & HL2 .vpk's, you can use this tool to automatically detect any textures, models, or sounds that may be baked into the map (zip archive). 
+A Python tool/script I made with ChatGPT to detect baked files in a map. Instead of manually going through & cross-referencing a maps textures & models with CSS & HL2 .vpk's, you can use this tool to automatically detect any textures, models, or sounds that may be baked into the map (zip archive). 
 
 Usage:
 1. Edit the .py script and change the paths to where the default lists are on your PC
